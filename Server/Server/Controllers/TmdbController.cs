@@ -65,22 +65,5 @@ namespace Server.Controllers
             }
         }
 
-        [Route("try")]
-        public async Task<List<Movies>> Process(int page = 1)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                using (var response = await httpClient.GetAsync($"https://api.themoviedb.org/3/movie/popular?api_key={api_key}&language=en-US&page={page}"))
-                {
-
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    var responseList = JsonConvert.DeserializeObject<Root>(apiResponse);
-                    return responseList.results.ToList();
-
-
-                    //return responseList.results.ToList();
-                }
-            }
-        }
     }
 }
