@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Server.Filters;
 using Server.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,10 @@ namespace Server.Controllers
     [Route("api/[controller]/")]
     [ApiController]
     [EnableCors("Allow")]
+    [ApiKey]
     public class TmdbController : ControllerBase
     {
         string api_key = "e2d7e58bc68b352267f2ea4c2387eb6e";
-
-        // GET: api/Tmdb
         [Route("popular")]
         // api/Tmdb/popular?page=100
         public async Task<ActionResult<Root>> GetAll(int page=1)

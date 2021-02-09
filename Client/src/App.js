@@ -9,9 +9,10 @@ import MovieDetails from './components/MovieDetails';
 import Paginate from './components/Paginate';
 import './App.css';
 
+const APIKEY = "d2fae15a-03ba-4b40-994d-c1da74bb36b7"
 
-const POPULAR_URL = "http://localhost:5000/api/Tmdb/popular";
-const SEARCH_URL = "http://localhost:5000/api/Tmdb/search?query=";
+const POPULAR_URL = `http://localhost:5000/api/Tmdb/popular?apiKey=${APIKEY}&page=`;
+const SEARCH_URL = `http://localhost:5000/api/Tmdb/search?apiKey=${APIKEY}&query=`;
 const SEARCH_BY_ID = "http://localhost:5000/api/Tmdb/id/";
 
 
@@ -23,18 +24,14 @@ function App() {
   const [page, setPage] = useState(1);
   const [totalpage, setTotalPages] = useState(0);
 
-
   useEffect(()=>{
-      fetch(POPULAR_URL)
+      fetch(POPULAR_URL + page)
       .then(res => res.json())
       .then(data =>{
         setMovies(data.results);
         setTotalPages(data.total_pages)
-
-
       });
-  }, []);
-
+  }, [page]);
 
   const handleSubmit = (e) =>{
       e.preventDefault();
@@ -45,7 +42,6 @@ function App() {
       .then(data =>{
           setMovies(data);
           setTotalPages(data.total_pages)
-
       });
 
       setSearchTerm("");
@@ -59,12 +55,11 @@ function App() {
   };
 
   const viewMovieInfo = (id) =>{
-    fetch(SEARCH_BY_ID + id)
+    fetch(SEARCH_BY_ID + id + "?apiKey=" + APIKEY)
     .then(response => response.json())
     .then(data =>{
         setcurrentMovie(data)
         setTotalPages(data.total_pages)
-
       });
   }
   
@@ -73,17 +68,15 @@ function App() {
 //   }
 
     const nextPage = (page) => {
-      fetch("http://localhost:5000/api/Tmdb/popular?page=" + page)
+      fetch(POPULAR_URL + page)
       .then(res => res.json())
       .then(data =>{
           setMovies(data.results);
           setPage(page)
-
-          console.log(data)
-
       });
 
     }
+
   return (
     <div className="App">
   
@@ -105,7 +98,6 @@ function App() {
             )}
             </Row>
         </Container>
-
     :
         <Container fluid='true'>
             <Row className="show-grid">
